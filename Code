@@ -1,0 +1,56 @@
+; L = {w#w / w is a word belonging {0,1}*}
+
+;State 0:
+0 # & * q5
+0 0 & r q10
+0 1 & r q11
+0 _ _ * reject
+
+;State q10
+q10 0 0 r q10
+q10 1 1 r q10
+q10 _ _ l reject
+q10 # # r q20
+
+;State q20
+q20 0 & l q3
+q20 & & r q20
+q20 _ _ l reject
+q20 1 1 r reject
+
+;State q3
+q3 # # l q4
+q3 * * l q3
+
+;State q4
+q4 * * l q4
+q4 & & r 0
+
+;State q11
+q11 0 0 r q11
+q11 1 1 r q11
+q11 _ _ l reject
+q11 # # r q21
+
+;State q21
+q21 1 & l q3
+q21 & & r q21
+q21 _ _ l reject
+q21 0 0 r reject
+
+;State q5
+q5 & & r q5
+q5 1 1 r reject
+q5 0 0 r reject
+q5 _ _ l accept
+
+accept & _ l accept
+accept _ : r accept2
+accept2 * ) * halt-accept
+
+reject _ _ l reject2
+reject * * r reject
+reject2 * _ l reject2
+reject2 _ : r reject3
+reject3 * ( * halt-reject
+
